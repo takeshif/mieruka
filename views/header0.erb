@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>見える化</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1>見える化</h1>
+
+    <div class="form-inline">
+      <label for="omise">お店コード</label>
+      <input type="text" class="form-control" size="5" id="omise">
+      <span class="omiseCmd" style="cursor:pointer;color:blue">[実行]</span>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        お店スタッフ
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#" data-value="1">藤本毅</a></li>
+        <li><a href="#" data-value="2">突々俊二</a></li>
+      </ul>
+      <input type="hidden" name="dropdown-value" value="">
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      $('.omiseCmd').click(function() {
+        $.post('/go', {
+          omise: $('#omise').val()
+        });
+      })
+
+      $('.dropdown_menu li a').click(function(){
+        $(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents('.dropdown').find('input[name="dropdown-value"]').val($(this).attr("data-value"));
+      });
+    </script>
+  </body>
+</html>
