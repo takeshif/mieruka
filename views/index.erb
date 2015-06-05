@@ -42,12 +42,35 @@
         <% end %>
       </ul>
 
+      <% @imtok.each do |imtok| %>
+        <input type="hidden" data-name-id="<%= imtok.syain_code %>" value="<%= imtok.syain_name %>">
+      <% end %>
+
       <div class="tab-content" style="padding:20px">
         <% @imtok.each do |imtok| %>
-        <div class="tab-pane"  id="<%= imtok.syain_code %>">
-          <h3><%= imtok.syain_name %></h3>
-        </div>
+        <div class="tab-pane" id="<%= imtok.syain_code %>">
         <% end %>
+
+          <div class="container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>社員番号</th>
+                  <th>氏名</th>
+                  <th>入社年月日</th>
+                  <th>職種</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="b_syain_cd"></td>
+                  <td id="b_syain_name"></td>
+                  <td id="b_nymd">2015/03/01</td>
+                  <td id="b_lank">社員初級</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
       </div>
 
 
@@ -55,5 +78,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script>
+      $(function () {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+          var href = $(e.target).attr('href').slice(1);
+          var name = $(':hidden[data-name-id=' + href + ']').val();
+          $('#b_syain_cd').text(href);
+          $('#b_syain_name').text(name);
+          //alert(href);
+          //$('.tab-pane').attr('id','href')
+        });
+      });
+
+    </script>　
+
   </body>
 </html>
