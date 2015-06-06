@@ -38,7 +38,7 @@
     <div class="container" style="padding:20px 0">
       <ul class="nav nav-tabs">
         <% @imtok.each do |imtok| %>
-          <li data-id="<%= imtok.syain_code %>"><a href="#<%= imtok.syain_code %>" data-toggle="tab"><%= imtok.syain_name %></a></li>
+          <li data-id="<%= imtok.syain_code %>"><a href="#<%= imtok.syain_code %>" data-toggle="tab"><%= imtok.syain_name %>  < <%= imtok.yakusyoku %> ></a></li>
         <% end %>
       </ul>
 
@@ -71,8 +71,25 @@
               </tbody>
             </table>
         </div>
-      </div>
 
+        <div class="container">
+          <table class=table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>内容</th>
+                <th>評価</th>
+              </tr>
+            </thead>
+            <tbody>
+              <td>1</td>
+              <td>ちゃんとしていますか?</td>
+              <td>1</td>
+            </tbody>
+          </tabld>
+        </div>
+
+      </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
