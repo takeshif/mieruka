@@ -37,8 +37,12 @@
 
     <div class="container" style="padding:20px 0">
       <ul class="nav nav-tabs">
-        <% @imtok.each do |imtok| %>
-          <li data-id="<%= imtok.syain_code %>"><a href="#<%= imtok.syain_code %>" data-toggle="tab"><%= imtok.syain_name %>  < <%= imtok.yakusyoku %> ></a></li>
+        <% if @imtok.count == 0 then %>
+        <li data-id="nonset"><a href="nonset" data-toggle="tab"></a></li>
+        <% else %>
+          <% @imtok.each do |imtok| %>
+            <li data-id="<%= imtok.syain_code %>"><a href="#<%= imtok.syain_code %>" data-toggle="tab"><%= imtok.syain_name %>  < <%= imtok.yakusyoku %> ></a></li>
+          <% end %>
         <% end %>
       </ul>
 
@@ -46,50 +50,64 @@
         <input type="hidden" data-name-id="<%= imtok.syain_code %>" value="<%= imtok.syain_name %>">
       <% end %>
 
+      <% i = 1 %>
+      <% @as.each do |as| %>
+        <input type="hidden" data-as-id="<%= i %>" value="<%= as.category + "," + as.kadai %>">
+        <% i = i + 1 %>
+      <% end %>
+      <input type="hidden" id="ascnt" value="<%= @as.count %>">
+
+      <% i = 1 %>
+      <% @aj.each do |aj| %>
+        <input type="hidden" data-aj-id="<%= i %>" value="<%= aj.category + "," + aj.kadai %>">
+        <% i = i + 1 %>
+      <% end %>
+      <input type="hidden" id="ajcnt" value="<%= @aj.count %>">
+
+      <% i = 1 %>
+      <% @sj.each do |as| %>
+        <input type="hidden" data-sj-id="<%= i %>" value="<%= sj.category + "," + sj.kadai %>">
+        <% i = i + 1 %>
+      <% end %>
+      <input type="hidden" id="sjcnt" value="<%= @sj.count %>">
+
+      <% i = 1 %>
+      <% @ss.each do |ss| %>
+        <input type="hidden" data-ss-id="<%= i %>" value="<%= ss.category + "," + ss.kadai %>">
+        <% i = i + 1 %>
+      <% end %>
+      <input type="hidden" id="sscnt" value="<%= @ss.count %>">
+
+
       <div class="tab-content" style="padding:20px">
-        <% @imtok.each do |imtok| %>
-        <div class="tab-pane" id="<%= imtok.syain_code %>">
-        <% end %>
+        <% if @imtok.count == 0 then %>
+        <div class="tab-pane" id="nonset">
+        <% else %>
+          <% @imtok.each do |imtok| %>
+          <div class="tab-pane" id="<%= imtok.syain_code %>">
+          <% end %>
 
-          <div class="container">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>社員番号</th>
-                  <th>氏名</th>
-                  <th>入社年月日</th>
-                  <th>職種</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td id="b_syain_cd"></td>
-                  <td id="b_syain_name"></td>
-                  <td id="b_nymd"></td>
-                  <td id="b_lank"></td>
-                </tr>
-              </tbody>
-            </table>
+            <div>
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th id="h_no"></th>
+                    <th id="h_category"></th>
+                    <th id="h_naiyo"></th>
+                    <th id="h_hyoka"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
+      <% end %>
+    </div>
+  </div>
 
-        <div class="container">
-          <table class=table>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>内容</th>
-                <th>評価</th>
-              </tr>
-            </thead>
-            <tbody>
-              <td>1</td>
-              <td>ちゃんとしていますか?</td>
-              <td>1</td>
-            </tbody>
-          </tabld>
-        </div>
-
-      </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -101,10 +119,64 @@
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
           var href = $(e.target).attr('href').slice(1);
           var name = $(':hidden[data-name-id=' + href + ']').val();
-          $('#b_syain_cd').text(href);
-          $('#b_syain_name').text(name);
+          var as_kadai = [];
+
+          var asmax = $('#ascnt').val();
+          var ajmax = $("hidden").attr("data-ajcnt-id");
+          var ssmax = $("hidden").attr("data-sscnt-id");
+          var sjmax = $("hidden").attr("data-sjcnt-id");
+
+          var select = '<select class="form-control">';
+          select = select + ' <option value="1">1</option>';
+          select = select + ' <option value="2">2</option>';
+          select = select + ' <option value="3">3</option>';
+          select = select + ' <option value="4">4</option>';
+          select = select + ' <option value="5">5</option>';
+          select = select + '</select></td></tr>';
+
+          $('tbody *').remove()
+
+          $('#h_no').text("No.");
+          $('#h_category').text("課題")
+          $('#h_naiyo').text("内容");
+          $('#h_hyoka').text("評価");
+
+          for (var idx = 1; idx < asmax; idx++) {
+            var kc = $(':hidden[data-as-id=' + idx + ']').val();
+            as_kadai = kc.split(",");
+
+            $('tbody').append('<tr><td>' + idx + '</td><td>' + as_kadai[0] + '</td><td>' +
+              as_kadai[1] + '</td><td>' + select);
+            $('td:last').attr("id", function(idx){return "hyouka" + idx;});
+            //$('tbody').append('<td>' + as_kadai[0] + '</td>');
+            //$('tbody').append('<td>' + as_kadai[1] + '</td>');
+            //$('tbody').append('<td>' + select);
+            //$('#b_category').text(as_kadai[0]);
+            //$('#b_naiyo1').text(as_kadai[1]);
+
+          }
+
+          //$('#b_hyoka1').text(5);
+          //$('#b_no2').text(2);
+          //$('#b_naiyo2').text("声をだしていますか？");
+          //$('#b_hyoka2').text(3);
           //alert(href);
           //$('.tab-pane').attr('id','href')
+
+
+          //<tr>
+          //  <td id="b_no1"></td>
+          //  <td id="b_category"></td>
+          //  <td id="b_naiyo1"></td>
+          //  <td id="b_hyoka1" >
+          //    <select class="form-control">
+          //      <option value="1">1</option>
+          //      <option value="2">2</option>
+          //      <option value="3">3</option>
+          //      <option value="4">4</option>
+          //      <option value="5">5</option>
+          //    </select>
+          //  </td>
         });
       });
 
